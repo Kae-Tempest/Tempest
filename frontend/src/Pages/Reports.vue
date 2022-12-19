@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script>
+<script lang="js">
 import NavBar from '../components/NavBar.vue';
 import SensorCard from '../components/Report.vue'
 
