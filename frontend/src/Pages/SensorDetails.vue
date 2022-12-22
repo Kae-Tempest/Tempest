@@ -6,7 +6,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
 import NavBar from '../components/NavBar.vue';
 import Graph from '../components/graph.vue'
 
