@@ -5,5 +5,9 @@
 body{
     @apply bg-ctp-base;
     @apply text-ctp-text;
-    font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif; 
+}
+
+* {
+    font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+    margin: 0
 }

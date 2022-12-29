@@ -12,11 +12,12 @@ app.use(cors());
 //app.use(logger);
 
 app.post('/login', async (req: Request, res: Response) => {
-	const Members: User[] = await db.query(`select * from members order by id desc`);
+	const Members: User[] = await db.query(`select * from users order by id desc`);
+	if(Members.length === 0) return res.status(400).send({msg: '42'})
 	Members.forEach((member) => {
-		if (member.name != req.body.name && compareSync(req.body.password, member.password)) {
-			return res.send('200');
-		} else return res.send('400');
+		if (member.name === req.body.name && compareSync(req.body.password, member.password)) {
+			return res.sendStatus(200)
+		} else return res.sendStatus(400);
 	});
 });
 app.post('/signup', async (req: Request, res: Response) => {
@@ -25,7 +26,7 @@ app.post('/signup', async (req: Request, res: Response) => {
 		password: req.body.password,
 		email: req.body.email,
 	};
-	const Members: User[] = await db.query(`select * from members order by id desc`);
+	const Members: User[] = await db.query(`select * from users order by id desc`);
 
 	Members.forEach((member) => {
 		if (member.name == newMember.name || member.email == newMember.email) return res.status(400).json({ msg: 'Name or Email already taken' });
@@ -36,8 +37,8 @@ app.post('/signup', async (req: Request, res: Response) => {
 	if (!newMember.name || !newMember.email) return res.status(400).json({ msg: 'Please include a name and email' });
 
 	let hashPassword = hashSync(newMember.password, 10);
-	db.query(`insert into members (name, password, email) values (${newMember.name}, ${hashPassword}, ${newMember.email})`);
-	res.send(200);
+	db.query(`insert into users (name, password, email) values ('${newMember.name}', '${hashPassword}', '${newMember.email}')`);
+	res.sendStatus(200);
 });
 
 app.post('/data/:id', (req: Request, res: Response) => {

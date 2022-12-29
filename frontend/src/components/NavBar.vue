@@ -1,21 +1,36 @@
 <template>
-    <nav class="w-auto h-100 bg-ctp-crust flex justify-between items-center pl-4 pr-32">
+    <nav class="w-auto bg-ctp-crust flex justify-between items-center pl-4 pr-32">
         <div class="flex gap-4">
             <img src="../assets/Logo.png" alt="logo" class="h-71">
             <h1 class="text-ctp-text text-xxl">Métépaslà</h1>
         </div>
         <div>
-            <div class="text-ctp-subtext0 ab"><router-link to="/login">Login</router-link></div>
+            <div class="text-ctp-subtext0 ab">
+                <div v-if="route === 'Login'">
+                    <router-link to="/signup">Sign Up</router-link>
+                </div>
+                <div v-else-if="connect"></div>
+                <div v-else>
+                    <router-link to="/login">Login</router-link>
+                </div>
+            </div>
         </div>
     </nav>
 </template>
 
-<script lang="js">
-export default {
-    
-}
+<script setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute().name
+const connect = JSON.parse(window.localStorage.getItem('connected'));
+
 </script>
 
 <style>
-
+:root {
+  --navHeight: 100px;
+}
+nav {
+  height: var(--navHeight);
+}
 </style>

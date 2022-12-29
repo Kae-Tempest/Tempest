@@ -14,11 +14,10 @@ const router = createRouter({
     routes: [
         {path: '/', name: 'Reports', component: Reports},
         {path: '/SensorDetails/:id', name: 'SensorDetails', component: SensorDetails},
-        {path: '/Login', name: 'Login', component: Login},
-        {path: '/Signup', name: 'Signup', component: Signup},
+        {path: '/login', name: 'Login', component: Login},
+        {path: '/signup', name: 'Signup', component: Signup},
     ]
 })
-
 
 
 createApp(App).use(router).mount('#app')

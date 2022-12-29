@@ -22,7 +22,12 @@ import SensorCard from '../components/Report.vue';
 import Map from '../components/Map.vue'
 
 export default {
-    components: {NavBar, Graph, SensorCard, Map},
+    components: {
+        NavBar,
+        Graph,
+        SensorCard,
+        Map
+    },
     data() {
         return {
             reload_component: 0,

@@ -59,9 +59,9 @@ import { useRoute } from 'vue-router'
       });
 
 
-      Temp = Temp.slice(-15)
-      Hum = Hum.slice(-15)
-      labels = labels.slice(-15)
+      Temp = Temp.slice(-50)
+      Hum = Hum.slice(-50)
+      labels = labels.slice(-50)
       config.data.datasets[0].data = Temp
       config.data.datasets[1].data = Hum
       config.data.labels = labels
