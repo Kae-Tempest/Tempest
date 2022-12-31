@@ -1,13 +1,14 @@
 <template>
   <NavBar />
 
-
   <div id="screen" class="w-full grid place-items-center">
 
   <div class="flex-col flex ml-auto mr-auto items-center w-full lg:w-1/3 md:w-3/5 p-5 bg-ctp-surface1 border rounded-xl border-white bg-">
 
     <form method="POST"  class="mt-2 flex flex-col w-full" @submit.prevent="handleSubmit">
-
+      <div v-if="error_msg" class="text-ctp-red">
+          {{ error_msg }}
+        </div>
       <div class="flex justify-end h-10">
         <div class="scale-[0.25] translate-x-32 -translate-y-20">
         <img src="../assets/Logo.png" alt="logo" class=" -translate-y-20 translate-x-20 scale-150 rotate-[28deg]">
@@ -50,15 +51,20 @@ import { useRouter } from 'vue-router'
 const name = ref('')
 const password = ref('')
 const router = useRouter()
+let error_msg = ref('')
 
-const handleSubmit = () => {
-  axios.post('http://127.0.0.1:5000/login',{
+const handleSubmit = async () => {
+   await axios.post('http://127.0.0.1:5000/login',{
     name: name.value,
     password: password.value
+  }).then(() => {
+    window.localStorage.setItem('connected', 'true')
+    router.push({
+      name: 'Reports'
+    })
   })
-  window.localStorage.setItem('connected', 'true')
-  router.push({
-    name: 'Reports'
+  .catch(res => {
+    error_msg.value = res.response.data.msg
   })
 }
 </script>

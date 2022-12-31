@@ -7,7 +7,9 @@
     <div class="flex-col flex ml-auto mr-auto items-center w-full lg:w-1/3 md:w-3/5 p-5 bg-ctp-surface1 border rounded-xl border-white bg-">
   
       <form method="POST"  class="mt-2 flex flex-col w-full" @submit.prevent="handleSubmit">
-  
+        <div v-if="error_msg" class="text-ctp-red">
+          {{ error_msg }}
+        </div>
         <div class="flex justify-end h-10">
           <div class="scale-[0.25] translate-x-32 -translate-y-20">
           <img src="../assets/Logo.png" alt="logo" class=" -translate-y-20 translate-x-20 scale-150 rotate-[28deg]">
@@ -22,7 +24,7 @@
                   </svg>
                 </span>
           </div>
-          <input v-model="name" type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none text-ctp-maroon" placeholder="Username" />
+          <input v-model="name" type="text" min="3" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none text-ctp-maroon" placeholder="Username" />
         </div>
 
         <div class="flex flex-wrap items-stretch w-full relative h-15 bg-white rounded mb-4">
@@ -33,7 +35,7 @@
                     </svg>
                 </span>
           </div>
-          <input v-model="email" type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none text-ctp-maroon" placeholder="Email" />
+          <input v-model="email" type="email" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none text-ctp-maroon" placeholder="Email" />
         </div>
 
 
@@ -45,7 +47,7 @@
               </svg>
             </span>
           </div>
-          <input v-model="password" type="password" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 px-3 relative self-center text-xl outline-none text-ctp-green" placeholder="Password" />
+          <input v-model="password" type="password" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 px-3 relative self-center text-xl outline-none text-ctp-green" min="4" placeholder="Password" />
         </div>
 
         <div class="flex flex-wrap items-stretch w-full relative h-15 bg-white rounded mb-4">
@@ -74,18 +76,23 @@
   const email = ref('')
   const password = ref('')
   const confirm_password = ref('')
+  const error_msg = ref('')
   
   const handleSubmit = () => {
-    axios.post('http://192.168.1.1:5000/signup',{
+      axios.post('http://192.168.1.1:5000/signup',{
       name: name.value,
       email: email.value,
       password: password.value,
       confirm_password: confirm_password.value
+    }).then(() => {
+      window.localStorage.setItem('connected', 'true')
+      router.push({
+        name: Reports
+      })
+    }).catch(res => {
+      error_msg.value = res.response.data.msg
     })
-    window.localStorage.setItem('connected', 'true')
-  router.push({
-    name: Reports
-  })
+
   }
   </script>
   
