@@ -58,6 +58,7 @@ const handleSubmit = async () => {
     name: name.value,
     password: password.value
   }).then(() => {
+    console.log('42');
     window.localStorage.setItem('connected', 'true')
     router.push({
       name: 'Reports'

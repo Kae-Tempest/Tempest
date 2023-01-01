@@ -23,13 +23,13 @@ app.use((0, cors_1.default)());
 app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const Members = yield db.query(`select * from users order by id desc`);
     if (Members.length === 0)
-        return res.status(400).send({ msg: '42' });
+        return res.status(401).send({ msg: '42' });
     Members.forEach((member) => {
         if (member.name === req.body.name && (0, bcrypt_1.compareSync)(req.body.password, member.password)) {
-            return res.sendStatus(200);
+            return res.status(200);
         }
         else
-            return res.sendStatus(400);
+            return res.status(401).send({ msg: 'Name or Password incorrect' });
     });
 }));
 app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,15 +41,15 @@ app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const Members = yield db.query(`select * from users order by id desc`);
     Members.forEach((member) => {
         if (member.name == newMember.name || member.email == newMember.email)
-            return res.status(400).json({ msg: 'Name or Email already taken' });
+            return res.status(401).send({ msg: 'Name or Email already taken' });
+        if (req.body.password != req.body.confirm_password)
+            return res.status(401).send({ msg: 'Password and confirm password are not the same' });
+        if (!newMember.name || !newMember.email)
+            return res.status(401).send({ msg: 'Please include a name and email' });
     });
-    if (req.body.password != req.body.confirm_password)
-        return res.status(400).json({ msg: 'Password and confirm password are not the same' });
-    if (!newMember.name || !newMember.email)
-        return res.status(400).json({ msg: 'Please include a name and email' });
     let hashPassword = (0, bcrypt_1.hashSync)(newMember.password, 10);
     db.query(`insert into users (name, password, email) values ('${newMember.name}', '${hashPassword}', '${newMember.email}')`);
-    res.sendStatus(200);
+    res.status(400);
 }));
 app.post('/data/:id', (req, res) => {
     const newData = {
@@ -59,25 +59,25 @@ app.post('/data/:id', (req, res) => {
         date: Date.now(),
     };
     db.query(`insert into data (sensor_id, temperature, humidity, mesured_at) values (${newData.id}, ${newData.temperature}, ${newData.Humidity}, ${newData.date})`);
-    return res.send('200');
+    return res.send(200);
 });
-app.post('/createSensor/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/createSensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const Sensors = yield db.query(`select * from sensor`);
     const newSensor = {
-        id: req.params.id,
+        id: req.body.id,
         name: req.body.name,
         longitude: req.body.longitude,
         latitude: req.body.latitude,
     };
     Sensors.forEach((sensor) => {
         if (newSensor.id === sensor.id) {
-            return res.send({ msg: 'Sensor already exist' }).status(400);
+            return res.status(401).send({ msg: 'Sensor already exist' });
         }
         else {
-            db.query(`insert into sensor (sensor_name, longitude, latitude) values (${newSensor.name} ${newSensor.longitude}, ${newSensor.latitude})`);
+            db.query(`insert into sensor (id,sensor_name, longitude, latitude) values (${newSensor.id},'${newSensor.name}',${newSensor.longitude}, ${newSensor.latitude})`);
+            return res.status(200);
         }
     });
-    res.send({ msg: 'Sensor Added' }).status(200);
 }));
 app.get('/report/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield db.query(`select * from data where sensor_id = ${req.params.id}`);

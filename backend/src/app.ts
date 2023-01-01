@@ -12,13 +12,21 @@ app.use(cors());
 //app.use(logger);
 
 app.post('/login', async (req: Request, res: Response) => {
-	const Members: User[] = await db.query(`select * from users order by id desc`);
-	if (Members.length === 0) return res.status(401).send({ msg: '42' });
+	const Members: User[] = await db.query(`select * from users where name = ? order by id desc`, [req.body.name]);
+	if (Members.length === 0) return res.status(401).send({ msg: 'Name doesn\'t existe' });
+	let MemberFound = false
 	Members.forEach((member) => {
 		if (member.name === req.body.name && compareSync(req.body.password, member.password)) {
-			return res.status(200);
-		} else return res.status(401).send({ msg: 'Name or Password incorrect' });
+			return MemberFound = true
+		} else {
+			return MemberFound = false
+		}
 	});
+	if(MemberFound) {
+		res.sendStatus(200);}
+	else {
+		res.status(401).send({ msg: 'Password incorrect' });
+	}
 });
 app.post('/signup', async (req: Request, res: Response) => {
 	const newMember = {
@@ -49,7 +57,6 @@ app.post('/data/:id', (req: Request, res: Response) => {
 	db.query(`insert into data (sensor_id, temperature, humidity, mesured_at) values (${newData.id}, ${newData.temperature}, ${newData.Humidity}, ${newData.date})`);
 	return res.send(200);
 });
-
 app.post('/createSensor', async (req: Request, res: Response) => {
 	const Sensors = await db.query(`select * from sensor`);
 	const newSensor = {

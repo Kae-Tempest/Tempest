@@ -4,7 +4,9 @@
         <div v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
             <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="reload_sensor"/></router-link>
         </div>
-        <AddSensor/>
+        <div v-if="connect">
+            <AddSensor/>
+        </div>
     </div>
 </template>
 
@@ -23,7 +25,8 @@ export default {
     data() {
         return {
             sensors: Object,
-            reload_sensor: 0
+            reload_sensor: 0,
+            connect: false
         }
     },
     async created () {
@@ -32,6 +35,9 @@ export default {
         this.sensors = sensor
     },
     mounted: function() {
+        this.connect = JSON.parse(window.localStorage.getItem('connected'))
+        console.log(this.connect);
+        console.log(JSON.parse(window.localStorage.getItem('connected')));
         this.reload()
     },
     methods: {
