@@ -13,18 +13,18 @@ app.use(cors());
 
 app.post('/login', async (req: Request, res: Response) => {
 	const Members: User[] = await db.query(`select * from users where name = ? order by id desc`, [req.body.name]);
-	if (Members.length === 0) return res.status(401).send({ msg: 'Name doesn\'t existe' });
-	let MemberFound = false
+	if (Members.length === 0) return res.status(401).send({ msg: "Name doesn't existe" });
+	let MemberFound = false;
 	Members.forEach((member) => {
 		if (member.name === req.body.name && compareSync(req.body.password, member.password)) {
-			return MemberFound = true
+			return (MemberFound = true);
 		} else {
-			return MemberFound = false
+			return (MemberFound = false);
 		}
 	});
-	if(MemberFound) {
-		res.sendStatus(200);}
-	else {
+	if (MemberFound) {
+		res.sendStatus(200);
+	} else {
 		res.status(401).send({ msg: 'Password incorrect' });
 	}
 });
@@ -44,7 +44,7 @@ app.post('/signup', async (req: Request, res: Response) => {
 
 	let hashPassword = hashSync(newMember.password, 10);
 	db.query(`insert into users (name, password, email) values ('${newMember.name}', '${hashPassword}', '${newMember.email}')`);
-	res.status(400);
+	res.sendStatus(200);
 });
 
 app.post('/data/:id', (req: Request, res: Response) => {

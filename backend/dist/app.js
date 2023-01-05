@@ -21,16 +21,24 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 //app.use(logger);
 app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Members = yield db.query(`select * from users order by id desc`);
+    const Members = yield db.query(`select * from users where name = ? order by id desc`, [req.body.name]);
     if (Members.length === 0)
-        return res.status(401).send({ msg: '42' });
+        return res.status(401).send({ msg: "Name doesn't existe" });
+    let MemberFound = false;
     Members.forEach((member) => {
         if (member.name === req.body.name && (0, bcrypt_1.compareSync)(req.body.password, member.password)) {
-            return res.status(200);
+            return (MemberFound = true);
         }
-        else
-            return res.status(401).send({ msg: 'Name or Password incorrect' });
+        else {
+            return (MemberFound = false);
+        }
     });
+    if (MemberFound) {
+        res.sendStatus(200);
+    }
+    else {
+        res.status(401).send({ msg: 'Password incorrect' });
+    }
 }));
 app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newMember = {
@@ -49,7 +57,7 @@ app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     });
     let hashPassword = (0, bcrypt_1.hashSync)(newMember.password, 10);
     db.query(`insert into users (name, password, email) values ('${newMember.name}', '${hashPassword}', '${newMember.email}')`);
-    res.status(400);
+    res.sendStatus(200);
 }));
 app.post('/data/:id', (req, res) => {
     const newData = {

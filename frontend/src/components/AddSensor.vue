@@ -75,7 +75,7 @@ import { ref } from 'vue'
     showModal.value = !showModal.value;
   }
   const handleSubmit = () => {
-    axios.post('http://127.0.0.1:5000/createSensor',{
+    axios.post('http://192.168.1.28:5000/createSensor',{
           name: emplacement.value,
           id: id.value,
           longitude: Longitude.value,

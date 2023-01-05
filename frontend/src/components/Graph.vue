@@ -35,7 +35,7 @@ import { useRoute } from 'vue-router'
 
       watchEffect(() => {
         setInterval(async () => {
-          const res = await axios.get(`http://192.168.1.1:5000/report/${route.params.id}`)
+          const res = await axios.get(`http://192.168.1.28:5000/report/${route.params.id}`)
           const { data: reports } = await res
           reports.forEach(report => {
           let date = new Date(Number(report.mesured_at))
@@ -48,7 +48,7 @@ import { useRoute } from 'vue-router'
       }),
 
       onMounted(async () => {
-        const res = await axios.get(`http://192.168.1.1:5000/report/${route.params.id}`)
+        const res = await axios.get(`http://192.168.1.28:5000/report/${route.params.id}`)
         const { data: reports } = await res
         reports.forEach(report => {
         let date = new Date(Number(report.mesured_at))

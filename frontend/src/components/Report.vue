@@ -29,7 +29,7 @@ export default {
         }
     }, 
     async created () {
-        const res = await axios.get(`http://192.168.1.1:5000/report/${this.id}`)
+        const res = await axios.get(`http://192.168.1.28:5000/report/${this.id}`)
         const { data: reports } = await res
         const TempColor = document.getElementById('temp')
         const HumColor = document.getElementById('hum')

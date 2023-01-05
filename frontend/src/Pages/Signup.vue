@@ -79,7 +79,7 @@
   const error_msg = ref('')
   
   const handleSubmit = () => {
-      axios.post('http://192.168.1.1:5000/signup',{
+      axios.post('http://192.168.1.28:5000/signup',{
       name: name.value,
       email: email.value,
       password: password.value,

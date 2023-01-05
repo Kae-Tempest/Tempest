@@ -30,14 +30,11 @@ export default {
         }
     },
     async created () {
-        const res = await axios.get(`http://192.168.1.1:5000/sensor/`)
+        const res = await axios.get(`http://192.168.1.28:5000/sensor/`)
         const { data: sensor } = await res
         this.sensors = sensor
     },
     mounted: function() {
-        this.connect = JSON.parse(window.localStorage.getItem('connected'))
-        console.log(this.connect);
-        console.log(JSON.parse(window.localStorage.getItem('connected')));
         this.reload()
     },
     methods: {

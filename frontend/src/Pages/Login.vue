@@ -54,11 +54,10 @@ const router = useRouter()
 let error_msg = ref('')
 
 const handleSubmit = async () => {
-   await axios.post('http://127.0.0.1:5000/login',{
+   await axios.post('http://192.168.1.28:5000/login',{
     name: name.value,
     password: password.value
   }).then(() => {
-    console.log('42');
     window.localStorage.setItem('connected', 'true')
     router.push({
       name: 'Reports'
