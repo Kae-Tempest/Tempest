@@ -7,18 +7,6 @@ module.exports = {
 			xl: ['21px', 1],
 			'5xl': ['55px', 1],
 		},
-		extend: {
-			height: {
-				100: '100px',
-				71: '71px',
-			},
-			width: {
-				504: '504px',
-			},
-			lineHeight: {
-				75: '75px',
-			},
-		},
 	},
 	plugins: [
 		require('@catppuccin/tailwindcss')({
