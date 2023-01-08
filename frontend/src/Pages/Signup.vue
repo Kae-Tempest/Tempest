@@ -71,21 +71,24 @@
   import NavBar from '../components/NavBar.vue';
   import axios from 'axios'
   import { ref } from 'vue'
+  import { LoginStore } from '../store/store'
   
   const name = ref('')
   const email = ref('')
   const password = ref('')
   const confirm_password = ref('')
-  const error_msg = ref('')
+  let error_msg = ref('')
+  const store = LoginStore()
+  
   
   const handleSubmit = () => {
-      axios.post('http://192.168.1.28:5000/signup',{
+      axios.post('http://1127.0.0.1:5000/signup',{
       name: name.value,
       email: email.value,
       password: password.value,
       confirm_password: confirm_password.value
     }).then(() => {
-      window.localStorage.setItem('connected', 'true')
+      store.setConnect(true)
       router.push({
         name: Reports
       })

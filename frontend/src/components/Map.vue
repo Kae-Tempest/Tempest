@@ -1,5 +1,5 @@
 <template>
-  <div id="container" class="ml-24">
+  <div id="container" class="ml-24 absolute z-0">
     <div id="mapContainer"></div>
   </div>
  </template>
@@ -31,7 +31,7 @@ let center = []
       shadowAnchor: [22, 94]})).addTo(mapDiv);
   }
   onMounted( async () => {
-    const res = await axios.get(`http://192.168.1.28:5000/sensorPosition/${route.params.id}`)
+    const res = await axios.get(`http://127.0.0.1:5000/sensorPosition/${route.params.id}`)
           const { data: sensor } = await res
           center = [sensor[0].latitude, sensor[0].longitude]
    setupLeafletMap();
