@@ -1,48 +1,33 @@
 <template>
     <div>
         <NavBar />
-        <div v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
+        <div v-if="renderComponent" v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
             <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="reload_sensor"/></router-link>
         </div>
-        <div v-if="connect">
+        <div v-show="connect">
             <AddSensor/>
         </div>
     </div>
 </template>
 
-<script lang="js">
+<script setup>
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
+import { LoginStore } from '../store/store'
 import NavBar from '../components/NavBar.vue';
 import SensorCard from '../components/Report.vue'
 import AddSensor from '../components/AddSensor.vue'
-import axios from 'axios'
 
-export default {
-    components: {
-        NavBar,
-        SensorCard,
-        AddSensor
-    },
-    data() {
-        return {
-            sensors: Object,
-            reload_sensor: 0,
-            connect: false
-        }
-    },
-    async created () {
-        const res = await axios.get(`http://192.168.1.28:5000/sensor/`)
-        const { data: sensor } = await res
-        this.sensors = sensor
-    },
-    mounted: function() {
-        this.reload()
-    },
-    methods: {
-        reload() {
-            setInterval(() => {
-                this.reload_sensor ++;
-            }, 300000)
-        },
-    },
-}
+const renderComponent = ref(0)
+const sensors = ref(Object)
+const connect = LoginStore().connect
+
+const forceRerender = () => {
+    renderComponent.value ++  ;
+};
+
+onMounted(async () => {
+    const { data: sensor } = await axios.get(`http://127.0.0.1:5000/sensor/`)
+    sensors.value = sensor
+})
 </script>

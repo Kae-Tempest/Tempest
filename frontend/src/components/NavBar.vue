@@ -20,9 +20,12 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
+import { LoginStore } from '../store/store' 
+
+const LoginValue = LoginStore()
 
 const route = useRoute().name
-const connect = JSON.parse(window.localStorage.getItem('connected'));
+const connect = LoginValue.connect
 
 </script>
 
