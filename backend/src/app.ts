@@ -105,4 +105,4 @@ app.get('/sensorPosition/:id', async (req: Request, res: Response) => {
 	return res.send(Position).status(200);
 });
 
-app.listen(5000, () => console.log('server running'));
+app.listen(8080, () => console.log('server running'));

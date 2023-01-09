@@ -1,6 +1,5 @@
 <template>
     <div class="bg-ctp-surface1 h-64 w-[504px] rounded-3xl border border-white">
-
         <div class="pt-3 text-center">
             <div class="col-span-2 text-5xl pb-10">{{ props.name }}</div>
             <div v-if="router.value === `SensorDetails`">
@@ -9,7 +8,6 @@
                     <hr class="border-l border-l-white h-32">
                     <div id="hum" class="text-5xl">{{Math.trunc(LastReports.humidity * 10000) / 10000}}%</div>
                 </div>
-    
                 <div class="flex justify-between pt-10 pl-[4.7rem] pr-20">
                         <div class="text-xl">Temp.</div>
                         <div class="text-xl">Hum.</div>
@@ -21,13 +19,11 @@
                 <hr class="border-l border-l-white h-28">
                 <div id="hum" class="text-5xl">{{Math.trunc(LastReports.humidity * 10000) / 10000}}%</div>
                 </div>
-
                 <div class="flex justify-between pl-[4.7rem] pr-20">
                     <div class="text-xl">Temp.</div>
                     <div class="text-xl">Hum.</div>
                 </div>
             </div>
-
             <div v-if="router === `SensorDetails` && connect" class="flex justify-end" @click="ShowModal()">
                 <button class="w-10 h-10 pt-3">
                     <svg fill="#ffffff" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="Glyph" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -121,7 +117,7 @@ import { LoginStore } from '../store/store'
             name: String
         })
 
-        
+
         const handleSubmit = async () => {
             if(NewEmplacement == '') {
                 error_msg.value = "Please choose a correct placement"
@@ -162,6 +158,6 @@ import { LoginStore } from '../store/store'
 </script>
 
 
-<style lang="postcss"> 
+<style lang="postcss">
     .isGreen {@apply text-ctp-green}
 </style>

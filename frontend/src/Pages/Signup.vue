@@ -60,7 +60,6 @@
           </div>
           <input v-model="confirm_password" type="password" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 px-3 relative self-center text-xl outline-none text-ctp-green" placeholder="Confirm Password" />
         </div>
-
               <button class="bg-ctp-overlay2 py-2 text-center md:py-2 text-white leading-tight text-xl md:text-base mx-auto mt-20 mb-4 w-1/2 border rounded-xl">Sign Up</button>
       </form>
     </div>
@@ -68,21 +67,23 @@
   </template>
   
   <script setup>
-  import NavBar from '../components/NavBar.vue';
   import axios from 'axios'
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import { LoginStore } from '../store/store'
-  
+  import NavBar from '../components/NavBar.vue';
+
   const name = ref('')
   const email = ref('')
-  const password = ref('')
-  const confirm_password = ref('')
   let error_msg = ref('')
+  const password = ref('')
   const store = LoginStore()
-  
+  const router = useRouter()
+  const confirm_password = ref('')
+
   
   const handleSubmit = () => {
-      axios.post('http://1127.0.0.1:5000/signup',{
+      axios.post('http://127.0.0.1:8080/signup',{
       name: name.value,
       email: email.value,
       password: password.value,
@@ -95,7 +96,6 @@
     }).catch(res => {
       error_msg.value = res.response.data.msg
     })
-
   }
   </script>
   

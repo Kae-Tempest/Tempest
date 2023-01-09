@@ -43,11 +43,11 @@
 </template>
 
 <script setup>
-import NavBar from '../components/NavBar.vue';
 import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { LoginStore } from '../store/store' 
+import { LoginStore } from '../store/store'
+import NavBar from '../components/NavBar.vue';
 
 const name = ref('')
 const password = ref('')
@@ -56,7 +56,7 @@ const store = LoginStore()
 let error_msg = ref('')
 
 const handleSubmit = async () => {
-   await axios.post('http://127.0.0.1:5000/login',{
+   await axios.post('http://127.0.0.1:8080/login',{
     name: name.value,
     password: password.value
   }).then(() => {

@@ -18,39 +18,23 @@
         </div>
 </template>
 
-<script lang="js">
-import NavBar from '../components/NavBar.vue';
-import Graph from '../components/Graph.vue';
-import SensorCard from '../components/Report.vue';
+<script setup>
+import { onMounted, ref } from 'vue';
 import Map from '../components/Map.vue'
+import Graph from '../components/Graph.vue';
+import NavBar from '../components/NavBar.vue';
+import SensorCard from '../components/Report.vue';
 import DataButton from '../components/DataButton.vue'
 
-export default {
-    components: {
-        NavBar,
-        Graph,
-        SensorCard,
-        Map,
-        DataButton,
-    },
-    data() {
-        return {
-            reload_component: 0,
-        }
-    },
-    mounted: function() {
-        this.reload()
-    },
-    methods: {
-        reload() {
-            setInterval(() => {
-                this.reload_component ++;
-            }, 300000)
-        },
-    },
+const reload_component = ref(0)
+
+onMounted(() => {
+    reload()
+})
+
+const reload = () => {
+    setInterval(() => {
+        reload_component.value ++;
+    }, 300000)
 }
 </script>
-
-<style>
-    
-</style>
