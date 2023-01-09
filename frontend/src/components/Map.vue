@@ -5,11 +5,11 @@
  </template>
 
 <script setup>
-import "leaflet/dist/leaflet.css";
-import { onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import L from "leaflet"
 import axios from 'axios'
-import L from "leaflet";
+import { onMounted } from 'vue'
+import "leaflet/dist/leaflet.css"
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 let center = []
@@ -31,7 +31,7 @@ let center = []
       shadowAnchor: [22, 94]})).addTo(mapDiv);
   }
   onMounted( async () => {
-    const res = await axios.get(`http://127.0.0.1:5000/sensorPosition/${route.params.id}`)
+    const res = await axios.get(`http://192.168.1.28:5000/sensorPosition/${route.params.id}`)
           const { data: sensor } = await res
           center = [sensor[0].latitude, sensor[0].longitude]
    setupLeafletMap();

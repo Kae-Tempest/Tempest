@@ -73,6 +73,7 @@
   <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
   let showModal = ref(false);
   const emplacement = ref('')
@@ -80,6 +81,7 @@ import { ref } from 'vue'
   const Longitude = ref('')
   const Latitude = ref('')
   const error_msg = ref('')
+  const router = useRouter()
 
   const toggleModal = () => {
     showModal.value = !showModal.value;
@@ -99,7 +101,8 @@ import { ref } from 'vue'
           longitude: Longitude.value,
           latitude: Latitude.value
         }).then(() => {
-          showModal.value = !showModal.value;
+          // a tester
+          router.push('/')
         })
         .catch(res => {
           error_msg.value = res.response.data.msg

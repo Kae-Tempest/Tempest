@@ -23,11 +23,14 @@ const sensors = ref(Object)
 const connect = LoginStore().connect
 
 const forceRerender = () => {
-    renderComponent.value ++  ;
+   setInterval(() => {
+      renderComponent.value ++
+    }, 300000)
 };
 
 onMounted(async () => {
     const { data: sensor } = await axios.get(`http://127.0.0.1:5000/sensor/`)
     sensors.value = sensor
+    forceRerender()
 })
 </script>

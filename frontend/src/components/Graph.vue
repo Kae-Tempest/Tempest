@@ -1,8 +1,8 @@
 <script setup>
-import Chart from 'chart.js/auto';
 import axios from 'axios'
-import {watchEffect, onMounted } from 'vue'
+import Chart from 'chart.js/auto'
 import { useRoute } from 'vue-router'
+import {watchEffect, onMounted } from 'vue'
 
       let Temp = []
       let Hum = []
@@ -35,7 +35,7 @@ import { useRoute } from 'vue-router'
 
       watchEffect(() => {
         setInterval(async () => {
-          const res = await axios.get(`http://127.0.0.1:5000/report/${route.params.id}`)
+          const res = await axios.get(`http://192.168.1.28:5000/report/${route.params.id}`)
           const { data: reports } = await res
           reports.forEach(report => {
           let date = new Date(Number(report.mesured_at))
@@ -48,7 +48,7 @@ import { useRoute } from 'vue-router'
       }),
 
       onMounted(async () => {
-        const res = await axios.get(`http://127.0.0.1:5000/report/${route.params.id}`)
+        const res = await axios.get(`http://192.168.1.28:5000/report/${route.params.id}`)
         const { data: reports } = await res
         reports.forEach(report => {
         let date = new Date(Number(report.mesured_at))
