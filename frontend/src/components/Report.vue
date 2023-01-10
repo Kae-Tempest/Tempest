@@ -16,7 +16,7 @@
             <div v-else>
                 <div class="flex justify-between px-10 h-20">
                 <div id="temp" class="text-5xl">{{LastReports.temperature}}°C</div>
-                <hr class="border-l border-l-white h-28">
+                <hr class="border-l border-l-white h-32">
                 <div id="hum" class="text-5xl">{{Math.trunc(LastReports.humidity * 10000) / 10000}}%</div>
                 </div>
                 <div class="flex justify-between pl-[4.7rem] pr-20">
@@ -25,15 +25,8 @@
                 </div>
             </div>
             <div v-if="router === `SensorDetails` && connect" class="flex justify-end" @click="ShowModal()">
-                <button class="w-10 h-10 pt-3">
-                    <svg fill="#ffffff" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="Glyph" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M13,16c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,14.346,13,16z" id="XMLID_294_"></path>
-                            <path d="M13,26c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,24.346,13,26z" id="XMLID_295_"></path>
-                            <path d="M13,6c0,1.654,1.346,3,3,3s3-1.346,3-3s-1.346-3-3-3S13,4.346,13,6z" id="XMLID_297_"></path>
-                        </g>
-                    </svg>
+                <button class="w-10 h-10 mt-12">
+                  <Icon icon="mdi:dots-vertical" class="text-[40px]"/>
                 </button>
             </div>
       <!-- Modal -->
@@ -99,17 +92,18 @@
 
 <script setup>
 import axios from 'axios'
+import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { LoginStore } from '../store/store'
 
+        let Modal = ref(false)
         const NewEmplacement = ref('')
         const NewLongitude = ref('')
         const NewLatitude = ref('')
         const error_msg = ref('')
         const Store = LoginStore()
         const connect = Store.connect
-        const Modal = ref(false)
         const LastReports = ref(Object)
         const router = useRoute().name
         const props = defineProps({
@@ -127,23 +121,23 @@ import { LoginStore } from '../store/store'
                 return
             }
 
-            axios.put(`http://127.0.0.1:5000/updateSensor/${props.id}`,{
+            axios.put(`http://192.168.1.28:5000/updateSensor/${props.id}`,{
                     name: NewEmplacement,
                     longitude: NewLongitude,
                     latitude: NewLatitude
             }).then(() => {
-                Modal = !Modal;
+                Modal.value = !Modal.value
             })
             .catch((error) => {
                 error_msg = error.response.data.msg
             })
         }
         const ShowModal = () => {
-            Modal = !Modal;
+            Modal.value = !Modal.value
         }
 
         onMounted(async () => {
-            const { data: reports } = await axios.get(`http://127.0.0.1:5000/report/${props.id}`)
+            const { data: reports } = await axios.get(`http://192.168.1.28:5000/report/${props.id}`)
             const TempColor = document.getElementById('temp')
             const HumColor = document.getElementById('hum')
             LastReports.value = reports[[reports.length - 1]]

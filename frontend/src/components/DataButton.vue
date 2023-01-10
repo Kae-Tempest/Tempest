@@ -44,11 +44,11 @@ const props = defineProps({
     id: Number
 })
 
-const showModal = ref(false)
-const LastReports = ref(Object)
+let showModal = ref(false)
+let LastReports = ref(Object)
 
 const ShowData = async function () {
-    const res = await axios.get(`http://127.0.0.1:8080/report/${props.id}`)
+    const res = await axios.get(`http://192.168.1.28:5000/report/${props.id}`)
     const { data: reports } = await res
     let LastDayReports = []
     reports.forEach(element => {
@@ -60,7 +60,7 @@ const ShowData = async function () {
         }
         LastReports = LastDayReports.reverse()
     });
-    showModal = !showModal
+    showModal.value = !showModal.value
 }
 </script>
 

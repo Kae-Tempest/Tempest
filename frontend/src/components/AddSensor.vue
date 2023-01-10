@@ -1,9 +1,7 @@
 <template>
     <div>
-      <button class="absolute bottom-5 right-5 bg-ctp-lavender text-white font-bold uppercase text-sm px-3 py-3 rounded-full border border-ctp-overlay2 shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150" type="button" v-on:click="toggleModal">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
+      <button class="absolute bottom-5 right-5 bg-ctp-lavender text-white font-bold uppercase p-1 rounded-full border border-ctp-overlay2 shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150" type="button" v-on:click="toggleModal">
+        <Icon icon="bi:plus" class="text-black text-[35px]"/>
       </button>
 
       <!-- Modal -->
@@ -74,6 +72,7 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Icon } from '@iconify/vue';
 
   let showModal = ref(false);
   const emplacement = ref('')
@@ -81,28 +80,33 @@ import { useRouter } from 'vue-router'
   const Longitude = ref('')
   const Latitude = ref('')
   const error_msg = ref('')
-  const router = useRouter()
 
   const toggleModal = () => {
     showModal.value = !showModal.value;
   }
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const sensors = await axios.get('http://192.168.1.28:5000/sensor')
+        for(let i = 0; i < sensors.data.length; i++) {
+          if((sensors.data[i].id)  == id.value) {
+            error_msg.value = 'This ID is already used'
+            return
+          }
+        }
     if(emplacement.value == '' || id.value == '' || Longitude.value == '' || Latitude.value == '') {
       error_msg.value = 'Please fill all the fields'
       return
     }
-    if(id.value != Number || emplacement.value != Number || Longitude.value != Number || Latitude.value != Number) {
+    if(isNaN(id.value) || isNaN(Longitude.value) || isNaN(Latitude.value)) {
       error_msg.value = 'Please put number in the fields'
       return
     }
-    axios.post('http://127.0.0.1:5000/createSensor',{
+    axios.post('http://192.168.1.28:5000/createSensor',{
           name: emplacement.value,
           id: id.value,
           longitude: Longitude.value,
           latitude: Latitude.value
         }).then(() => {
-          // a tester
-          router.push('/')
+          toggleModal()
         })
         .catch(res => {
           error_msg.value = res.response.data.msg

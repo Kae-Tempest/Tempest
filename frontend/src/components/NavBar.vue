@@ -6,10 +6,14 @@
         </div></router-link>
         <div>
             <div class="text-ctp-subtext0 ab">
-                <div v-if="route === 'Login'">
+                <div v-if="route.name === 'Login'">
                     <router-link to="/signup">Sign Up</router-link>
                 </div>
-                <div v-else-if="connect"></div>
+                <div v-else-if="connect" >
+                    <button @click="disconect">
+                        Log Out
+                    </button>
+                </div>
                 <div v-else>
                     <router-link to="/login">Login</router-link>
                 </div>
@@ -22,10 +26,16 @@
 import { useRoute } from 'vue-router'
 import { LoginStore } from '../store/store' 
 
-const LoginValue = LoginStore()
 
-const route = useRoute().name
-const connect = LoginValue.connect
+const store = LoginStore()
+
+const route = useRoute()
+const connect = store.connect
+
+const disconect = () => {
+    store.setConnect(false)
+    location.reload()
+}
 
 </script>
 

@@ -1,8 +1,8 @@
 <template>
     <div>
         <NavBar />
-        <div v-if="renderComponent" v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
-            <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="reload_sensor"/></router-link>
+        <div v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
+            <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="renderComponent"/></router-link>
         </div>
         <div v-show="connect">
             <AddSensor/>
@@ -29,7 +29,7 @@ const forceRerender = () => {
 };
 
 onMounted(async () => {
-    const { data: sensor } = await axios.get(`http://127.0.0.1:5000/sensor/`)
+    const { data: sensor } = await axios.get(`http://192.168.1.28:5000/sensor/`)
     sensors.value = sensor
     forceRerender()
 })

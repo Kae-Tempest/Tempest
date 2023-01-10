@@ -14,29 +14,9 @@
         <img src="../assets/Logo.png" alt="logo" class=" -translate-y-20 translate-x-20 scale-150 rotate-[28deg]">
         </div>
       </div>
-
-      <div class="flex flex-wrap items-stretch w-full relative h-15 bg-white rounded mb-6 pr-10">
-        <div class="flex -mr-px justify-center w-15 p-4">
-              <span class="flex items-center leading-normal bg-white px-3 border-0 rounded rounded-r-none text-2xl text-gray-600" >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </span>
-        </div>
-        <input v-model="name" type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none text-ctp-maroon" placeholder="Username" />
-      </div>
-      <div class="flex flex-wrap items-stretch w-full relative h-15 bg-white rounded mb-4">
-
-        <div class="flex -mr-px justify-center w-15 p-4">
-          <span class="flex items-center leading-normal bg-white rounded rounded-r-none text-xl px-3 whitespace-no-wrap text-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-            </svg>
-          </span>
-        </div>
-        <input v-model="password" type="password" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 px-3 relative self-center text-xl outline-none text-ctp-green" placeholder="Password" />
-      </div>
-            <button class="bg-ctp-overlay2 py-2 text-center md:py-2 text-white leading-tight text-xl md:text-base mx-auto mt-20 mb-4 w-1/2 border rounded-xl"> Login </button>
+      <InputComponent placeholder="Username" iconName="ph:user-circle-bold" v-model="name" model="name" type="text" color="text-ctp-green"/>
+      <InputComponent placeholder="Password" iconName="bxs:lock-alt" v-model="password" model="password" type="password" color="text-ctp-maroon"/>
+      <button class="bg-ctp-overlay2 py-2 text-center md:py-2 text-white leading-tight text-xl md:text-base mx-auto mt-20 mb-4 w-1/2 border rounded-xl"> Login </button>
     </form>
   </div>
   </div>
@@ -48,6 +28,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { LoginStore } from '../store/store'
 import NavBar from '../components/NavBar.vue';
+import InputComponent from '../components/under-components/InputComponent.vue';
 
 const name = ref('')
 const password = ref('')
@@ -55,8 +36,8 @@ const router = useRouter()
 const store = LoginStore()
 let error_msg = ref('')
 
-const handleSubmit = async () => {
-   await axios.post('http://127.0.0.1:8080/login',{
+const handleSubmit = () => {
+    axios.post('http://192.168.1.28:5000/login',{
     name: name.value,
     password: password.value
   }).then(() => {

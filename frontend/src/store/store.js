@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
 
-export const LoginStore = defineStore({  
+export const LoginStore = defineStore('LoginStore',
+{  
   id: 'login',
   state: () => ({
     connect: false
   }),
-
   getters: {
   },
 
@@ -14,5 +14,5 @@ export const LoginStore = defineStore({
       this.connect = value
     }
   },
-
-})
+persist: true
+},)
