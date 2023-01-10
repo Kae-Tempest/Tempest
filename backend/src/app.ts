@@ -6,8 +6,6 @@ import { logger } from './middleware/logger';
 const { db } = require('./databases/connect.js');
 const app: Application = express();
 
-
-
 app.use(express.json());
 app.use(cors());
 
@@ -70,7 +68,7 @@ app.post('/createSensor', async (req: Request, res: Response) => {
 		if (newSensor.id === sensor.id) {
 			return res.status(401).send({ msg: 'Sensor already exist' });
 		} else {
-			db.query(`insert into sensor (id,sensor_name, longitude, latitude) values (?,?,?,?)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]); 
+			db.query(`insert into sensor (id,sensor_name, longitude, latitude) values (?,?,?,?)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
 			return res.status(200);
 		}
 	});
@@ -82,7 +80,7 @@ app.put('/updateSensor/:id', async (req: Request, res: Response) => {
 		name: req.body.name,
 		longitude: req.body.longitude,
 		latitude: req.body.latitude,
-	};	
+	};
 	if (newSensor.id === JSON.stringify(sensor[0].id)) {
 		db.query(`update sensor set sensor_name = ? , longitude = ? , latitude = ? where id = ?`, [newSensor.name, newSensor.longitude, newSensor.latitude, newSensor.id]);
 		return res.sendStatus(200);
@@ -105,4 +103,4 @@ app.get('/sensorPosition/:id', async (req: Request, res: Response) => {
 	return res.send(Position).status(200);
 });
 
-app.listen(8080, () => console.log('server running'));
+app.listen(5000, () => console.log('server running'));
