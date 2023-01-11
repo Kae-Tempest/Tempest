@@ -21,14 +21,16 @@ let center = []
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapDiv);
-    L.marker(center, L.icon({
-      iconUrl: '../assets/marker-icon.png',
-      iconSize: [38, 95],
-      iconAnchor: [22, 94],
-      popupAnchor: [-3, -76],
-      shadowUrl: '../assets/marker-shadow.png',
-      shadowSize: [68, 95],
-      shadowAnchor: [22, 94]})).addTo(mapDiv);
+    const marker = L.icon({
+      iconUrl: '/marker-icon.png',
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      shadowUrl: '/marker-shadow.png',
+      shadowSize: [41, 41],
+      shadowAnchor: [13, 41]
+    })
+      
+    L.marker(center, {icon: marker} ).addTo(mapDiv);
   }
   onMounted( async () => {
     const res = await axios.get(`http://192.168.1.28:5000/sensorPosition/${route.params.id}`)

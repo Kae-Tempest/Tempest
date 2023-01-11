@@ -19,46 +19,46 @@
       </form>
     </div>
     </div>
-  </template>
-  
-  <script setup>
-  import axios from 'axios'
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { LoginStore } from '../store/store'
-  import NavBar from '../components/NavBar.vue';
-  import InputComponent from '../components/under-components/InputComponent.vue';
+</template>
 
-  const name = ref('')
-  const email = ref('')
-  let error_msg = ref('')
-  const password = ref('')
-  const store = LoginStore()
-  const router = useRouter()
-  const confirm_password = ref('')
+<script setup>
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { LoginStore } from '../store/store'
+import { ref, defineAsyncComponent } from 'vue'
 
-  
-  const handleSubmit = () => {
-      axios.post('http://192.168.1.28:5000/signup',{
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      confirm_password: confirm_password.value
-    }).then(() => {
-      store.setConnect(true)
-      router.push({
-        name: Reports
-      })
-    }).catch(res => {
-      error_msg.value = res.response.data.msg
+const NavBar = defineAsyncComponent(() => import('../components/NavBar.vue'))
+const InputComponent = defineAsyncComponent(() => import('../components/under-components/InputComponent.vue'))
+const name = ref('')
+const email = ref('')
+let error_msg = ref('')
+const password = ref('')
+const store = LoginStore()
+const router = useRouter()
+const confirm_password = ref('')
+
+
+const handleSubmit = () => {
+    axios.post('http://192.168.1.28:5000/signup',{
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    confirm_password: confirm_password.value
+  }).then(() => {
+    store.setConnect(true)
+    router.push({
+      name: Reports
     })
-  }
-  </script>
-  
-  <style>
-  #screen {
-    --screenSize: calc(100vh - var(--navHeight) );
-    height: var(--screenSize);
-  }
-  
-  </style>
+  }).catch(res => {
+    error_msg.value = res.response.data.msg
+  })
+}
+</script>
+
+<style>
+#screen {
+  --screenSize: calc(100vh - var(--navHeight) );
+  height: var(--screenSize);
+}
+
+</style>

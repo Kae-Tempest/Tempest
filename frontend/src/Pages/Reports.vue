@@ -12,11 +12,12 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, onMounted } from 'vue'
 import { LoginStore } from '../store/store'
-import NavBar from '../components/NavBar.vue';
-import SensorCard from '../components/Report.vue'
-import AddSensor from '../components/AddSensor.vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
+
+const NavBar = defineAsyncComponent(() => import('../components/NavBar.vue'))
+const SensorCard = defineAsyncComponent(() => import('../components/Report.vue'))
+const AddSensor = defineAsyncComponent(() => import('../components/AddSensor.vue'))
 
 const renderComponent = ref(0)
 const sensors = ref(Object)

@@ -19,13 +19,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import Map from '../components/Map.vue'
-import Graph from '../components/Graph.vue';
-import NavBar from '../components/NavBar.vue';
-import SensorCard from '../components/Report.vue';
-import DataButton from '../components/DataButton.vue'
+import { onMounted, ref, defineAsyncComponent } from 'vue'
+
+const Map = defineAsyncComponent(() => import('../components/Map.vue'))
+const Graph = defineAsyncComponent(() => import('../components/Graph.vue'))
+const NavBar = defineAsyncComponent(() => import('../components/NavBar.vue'))
+const SensorCard = defineAsyncComponent(() => import('../components/Report.vue'))
+const DataButton = defineAsyncComponent(() => import('../components/DataButton.vue'))
 
 const reload_component = ref(0)
 const route = useRoute()

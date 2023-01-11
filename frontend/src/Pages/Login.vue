@@ -24,11 +24,12 @@
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { LoginStore } from '../store/store'
-import NavBar from '../components/NavBar.vue';
-import InputComponent from '../components/under-components/InputComponent.vue';
+import { ref, defineAsyncComponent } from 'vue'
+
+const NavBar = defineAsyncComponent(() => import('../components/NavBar.vue'))
+const InputComponent = defineAsyncComponent(() => import('../components/under-components/InputComponent.vue'))
 
 const name = ref('')
 const password = ref('')
