@@ -101,7 +101,7 @@ import { LoginStore } from '../store/store'
         const NewEmplacement = ref('')
         const NewLongitude = ref('')
         const NewLatitude = ref('')
-        const error_msg = ref('')
+        let error_msg = ref('')
         const Store = LoginStore()
         const connect = Store.connect
         const LastReports = ref(Object)
