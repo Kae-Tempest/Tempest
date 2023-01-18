@@ -55,7 +55,7 @@ const props = defineProps({
                 if(LastReports.value.temperature > 26) TempColor.classList.add('text-ctp-red');
     
                 if(LastReports.value.humidity >= 40 && LastReports.value.humidity <= 70) HumColor.classList.add('text-ctp-green');
-                if(LastReports.value.humidity < 40) HumColor.classList.add('text-ctp-peacj');
+                if(LastReports.value.humidity < 40) HumColor.classList.add('text-ctp-peach');
                 if(LastReports.value.humidity > 70) HumColor.classList.add('text-ctp-red');
             }
         })
