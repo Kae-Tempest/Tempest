@@ -5,15 +5,15 @@
                   <Icon :icon="iconName" class="w-[24px] h-[24px]" />
                 </span>
           </div>
-          <input :v-model="props.model" :type="props.type" :placeholder="props.placeholder" @input="$emit('update:modelValue', $event.target.value)" :class="props.color"
-          min="3" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none"  />
+          <input :type="props.type" :placeholder="props.placeholder" @input="$emit('update:modelValue', $event.target.value)" :class="props.color"
+          min="3" class="flex-shrink flex-grow flex-auto leading-normal w-px border-0 h-10 border-grey-light rounded rounded-l-none px-3 self-center relative text-xl outline-none"/>
         </div>
 </template>
 
 
 <script setup>
 import { Icon } from '@iconify/vue' 
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 
 
 const props = defineProps({

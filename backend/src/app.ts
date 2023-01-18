@@ -69,7 +69,7 @@ app.post('/createSensor', async (req: Request, res: Response) => {
 			return res.status(401).send({ msg: 'Sensor already exist' });
 		} else {
 			db.query(`insert into sensor (id,sensor_name, longitude, latitude) values (?,?,?,?)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
-			return res.status(200);
+			return res.sendStatus(200);
 		}
 	});
 });
@@ -88,8 +88,21 @@ app.put('/updateSensor/:id', async (req: Request, res: Response) => {
 		return res.status(401).send({ msg: 'Sensor not found' });
 	}
 });
+app.delete('/deleteSensor/:id', async (req: Request, res: Response) => {
+	const sensor: Sensor[] = await db.query(`select * from sensor where id = ?`, [req.params.id]);
+	if (sensor.length <= 0) return res.status(401).send({ msg: 'Sensor not Found' });
+	else {
+		db.query(`delete from sensor where id = ?`, [req.params.id]);
+		return res.sendStatus(200);
+	}
+});
 app.get('/report/:id', async (req: Request, res: Response) => {
 	const data: Data[] = await db.query(`select * from data where sensor_id = ?`, [req.params.id]);
+	return res.send(data).status(200);
+});
+
+app.get('/lastreport/:id', async (req: Request, res: Response) => {
+	const data: Data[] = await db.query(`select * from data where sensor_id = ? order by id desc limit 1`, [req.params.id]);
 	return res.send(data).status(200);
 });
 

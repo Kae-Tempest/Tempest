@@ -105,7 +105,7 @@ import { Icon } from '@iconify/vue';
           longitude: Longitude.value,
           latitude: Latitude.value
         }).then(() => {
-          toggleModal()
+          location.reload()
         })
         .catch(res => {
           error_msg.value = res.response.data.msg

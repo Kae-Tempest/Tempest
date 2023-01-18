@@ -2,29 +2,8 @@
     <div class="bg-ctp-surface1 h-64 w-[504px] rounded-3xl border border-white">
         <div class="pt-3 text-center">
             <div class="col-span-2 text-5xl pb-10">{{ props.name }}</div>
-            <div v-if="router.value === `SensorDetails`">
-                <div class="flex justify-between px-10 pt-4  h-20">
-                    <div id="temp" class="text-5xl">{{LastReports.temperature}}°C</div>
-                    <hr class="border-l border-l-white h-32">
-                    <div id="hum" class="text-5xl">{{Math.trunc(LastReports.humidity * 10000) / 10000}}%</div>
-                </div>
-                <div class="flex justify-between pt-10 pl-[4.7rem] pr-20">
-                        <div class="text-xl">Temp.</div>
-                        <div class="text-xl">Hum.</div>
-                    </div>
-            </div>
-            <div v-else>
-                <div class="flex justify-between px-10 h-20">
-                <div id="temp" class="text-5xl">{{LastReports.temperature}}°C</div>
-                <hr class="border-l border-l-white h-32">
-                <div id="hum" class="text-5xl">{{Math.trunc(LastReports.humidity * 10000) / 10000}}%</div>
-                </div>
-                <div class="flex justify-between pl-[4.7rem] pr-20">
-                    <div class="text-xl">Temp.</div>
-                    <div class="text-xl">Hum.</div>
-                </div>
-            </div>
-            <div v-if="router === `SensorDetails` && connect" class="flex justify-end" @click="ShowModal()">
+            <DataCard :name="props.name" :id="props.id" :key="props.id"/>
+            <div v-if="route === `SensorDetails` && connect" class="flex justify-end" @click="ShowModal()">
                 <button class="w-10 h-10 mt-12">
                   <Icon icon="mdi:dots-vertical" class="text-[40px]"/>
                 </button>
@@ -76,8 +55,11 @@
             </div>
             <!--footer-->
             <div class="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
-              <button class="text-ctp-sapphire border border-ctp-sapphire rounded-md hover:bg-ctp-sapphire hover:text-ctp-peach background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit">
+              <button class="text-ctp-sapphire border border-ctp-sapphire rounded-md hover:bg-ctp-sapphire hover:text-ctp-maroon background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="submit">
                 Update Sensor
+              </button>
+              <button class="text-ctp-maroon border border-ctp-maroon rounded-md hover:bg-ctp-maroon hover:text-ctp-sky background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" v-on:click="handleDelete()">
+                Delete Sensor
               </button>
             </div>
           </form>
@@ -93,62 +75,61 @@
 <script setup>
 import axios from 'axios'
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, defineAsyncComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { LoginStore } from '../store/store'
 
-        let Modal = ref(false)
-        const NewEmplacement = ref('')
-        const NewLongitude = ref('')
-        const NewLatitude = ref('')
-        let error_msg = ref('')
-        const Store = LoginStore()
-        const connect = Store.connect
-        const LastReports = ref(Object)
-        const router = useRoute().name
-        const props = defineProps({
-            id: Number,
-            name: String
+const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue'))
+
+  let Modal = ref(false)
+  let error_msg = ref('')
+  const route = useRoute().name
+  const NewEmplacement = ref('')
+  const NewLatitude = ref('')
+  const NewLongitude = ref('')
+  const Store = LoginStore()
+  const connect = Store.connect
+  const router = useRouter()
+  const props = defineProps({
+      id: Number,
+      name: String
+  })
+
+  const handleSubmit = async () => {
+      if(NewEmplacement == '') {
+          error_msg.value = "Please choose a correct placement"
+          return
+      } else if (isNaN(NewLongitude) || isNaN(NewLatitude) || NewLongitude == '' || NewLatitude == '') {
+          error_msg = "Please put number in the fields"
+          return
+      }
+
+      axios.put(`http://192.168.1.28:5000/updateSensor/${props.id}`,{
+              name: NewEmplacement,
+              longitude: NewLongitude,
+              latitude: NewLatitude
+      }).then(() => {
+          Modal.value = !Modal.value
+      })
+      .catch((error) => {
+          error_msg = error.response.data.msg
+      })
+  }
+  const handleDelete = async () => {
+      axios.delete(`http://192.168.1.28:5000/deleteSensor/${props.id}`)
+      .then(() => {
+        router.push({
+          name: 'Reports'
         })
+      })
+      .catch((error) => {
+          error_msg = error.response.data.msg
+      })
+  }
 
-
-        const handleSubmit = async () => {
-            if(NewEmplacement == '') {
-                error_msg.value = "Please choose a correct placement"
-                return
-            } else if (isNaN(NewLongitude) || isNaN(NewLatitude) || NewLongitude == '' || NewLatitude == '') {
-                error_msg = "Please put number in the fields"
-                return
-            }
-
-            axios.put(`http://192.168.1.28:5000/updateSensor/${props.id}`,{
-                    name: NewEmplacement,
-                    longitude: NewLongitude,
-                    latitude: NewLatitude
-            }).then(() => {
-                Modal.value = !Modal.value
-            })
-            .catch((error) => {
-                error_msg = error.response.data.msg
-            })
-        }
-        const ShowModal = () => {
-            Modal.value = !Modal.value
-        }
-
-        onMounted(async () => {
-            const { data: reports } = await axios.get(`http://192.168.1.28:5000/report/${props.id}`)
-            const TempColor = document.getElementById('temp')
-            const HumColor = document.getElementById('hum')
-            LastReports.value = reports[[reports.length - 1]]
-            if(LastReports.value.temperature >= 15 && LastReports.value.temperature <= 26) TempColor.classList.add('text-ctp-green');
-            if(LastReports.value.temperature < 15) TempColor.classList.add('text-ctp-sky');
-            if(LastReports.value.temperature > 26) TempColor.classList.add('text-ctp-red');
-
-            if(LastReports.value.humidity >= 40 && LastReports.value.humidity <= 70) HumColor.classList.add('text-ctp-green');
-            if(LastReports.value.humidity < 40) HumColor.classList.add('text-ctp-peacj');
-            if(LastReports.value.humidity > 70) HumColor.classList.add('text-ctp-red');
-        })
+  const ShowModal = () => {
+      Modal.value = !Modal.value
+  }
 </script>
 
 

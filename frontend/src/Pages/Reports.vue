@@ -1,8 +1,10 @@
 <template>
     <div>
         <NavBar />
-        <div v-for="sensor in sensors" class="pl-20 pt-24 flex flex-wrap">
-            <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="renderComponent"/></router-link>
+        <div class="flex flex-wrap">
+            <div v-for="sensor in sensors" class="pl-20 pt-24">
+                <router-link :to="{ path: '/SensorDetails/' + sensor.id }"><SensorCard :id ="sensor.id" :name=sensor.sensor_name :key="renderComponent"/></router-link>
+            </div>
         </div>
         <div v-show="connect">
             <AddSensor/>
