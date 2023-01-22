@@ -21,7 +21,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 //app.use(logger);
 app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Members = yield db.query(`select * from users where name = ? order by id desc`, [req.body.name]);
+    const Members = yield db.query(`select * from users where name = $1 order by id desc`, [req.body.name]);
     let MemberFound = false;
     Members.forEach((member) => {
         if (member.name === req.body.name && (0, bcrypt_1.compareSync)(req.body.password, member.password)) {
@@ -54,7 +54,7 @@ app.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(401).send({ msg: 'Please include a name and email' });
     });
     let hashPassword = (0, bcrypt_1.hashSync)(newMember.password, 10);
-    db.query(`insert into users (name, password, email) values (?,?,?)`, [newMember.name, hashPassword, newMember.email]);
+    db.query(`insert into users (name, password, email) values ($1,$2,$3)`, [newMember.name, hashPassword, newMember.email]);
     res.sendStatus(200);
 }));
 app.post('/data/:id', (req, res) => {
@@ -64,7 +64,7 @@ app.post('/data/:id', (req, res) => {
         Humidity: req.body.hum,
         date: Date.now(),
     };
-    db.query(`insert into data (sensor_id, temperature, humidity, mesured_at) values (?,?,?,?)`, [newData.id, newData.temperature, newData.Humidity, newData.date]);
+    db.query(`insert into data (sensor_id, temperature, humidity, mesured_at) values ($1,$2,$3,$4)`, [newData.id, newData.temperature, newData.Humidity, newData.date]);
     return res.send(200);
 });
 app.post('/createSensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -80,13 +80,13 @@ app.post('/createSensor', (req, res) => __awaiter(void 0, void 0, void 0, functi
             return res.status(401).send({ msg: 'Sensor already exist' });
         }
         else {
-            db.query(`insert into sensor (id,sensor_name, longitude, latitude) values (?,?,?,?)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
-            return res.status(200);
+            db.query(`insert into sensor (id,sensor_name, longitude, latitude) values ($1,$2,$3,$4)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
+            return res.sendStatus(200);
         }
     });
 }));
 app.put('/updateSensor/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const sensor = yield db.query(`select * from sensor where id = ?`, [req.params.id]);
+    const sensor = yield db.query(`select * from sensor where id = $1`, [req.params.id]);
     const newSensor = {
         id: req.params.id,
         name: req.body.name,
@@ -94,15 +94,32 @@ app.put('/updateSensor/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
         latitude: req.body.latitude,
     };
     if (newSensor.id === JSON.stringify(sensor[0].id)) {
-        db.query(`update sensor set sensor_name = ? , longitude = ? , latitude = ? where id = ?`, [newSensor.name, newSensor.longitude, newSensor.latitude, newSensor.id]);
+        db.query(`update sensor set sensor_name = $1 , longitude = $2 , latitude = $3 where id = $4`, [newSensor.name, newSensor.longitude, newSensor.latitude, newSensor.id]);
         return res.sendStatus(200);
     }
     else {
         return res.status(401).send({ msg: 'Sensor not found' });
     }
 }));
-app.get('/report/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield db.query(`select * from data where sensor_id = ?`, [req.params.id]);
+app.delete('/deleteSensor/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const sensor = yield db.query(`select * from sensor where id = $1`, [req.params.id]);
+    if (sensor.length <= 0)
+        return res.status(401).send({ msg: 'Sensor not Found' });
+    else {
+        db.query(`delete from sensor where id = $1`, [req.params.id]);
+        return res.sendStatus(200);
+    }
+}));
+app.get('/lastreport/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield db.query(`select * from data where sensor_id = $1 order by id desc limit 1`, [req.params.id]);
+    return res.send(data).status(200);
+}));
+app.get('/graphreport/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield db.query(`select * from data where sensor_id = $1 order by id desc limit 35`, [req.params.id]);
+    return res.send(data).status(200);
+}));
+app.get('/dayreport/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield db.query(`select * from data where sensor_id = $1 order by id desc limit 288`, [req.params.id]);
     return res.send(data).status(200);
 }));
 app.get('/sensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -110,7 +127,7 @@ app.get('/sensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     return res.send(data).status(200);
 }));
 app.get('/sensorPosition/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Position = yield db.query(`select longitude, latitude from sensor where id = ?`, [req.params.id]);
+    const Position = yield db.query(`select longitude, latitude from sensor where id = $1`, [req.params.id]);
     return res.send(Position).status(200);
 }));
-app.listen(8080, () => console.log('server running'));
+app.listen(5000, () => console.log('server running'));

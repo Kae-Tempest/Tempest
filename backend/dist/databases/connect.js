@@ -1,20 +1,11 @@
 "use strict";
-const { createPool } = require('mariadb');
-const db = createPool({
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'root',
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.db = void 0;
+const { Pool } = require('pg');
+exports.db = new Pool({
+    user: 'postgres',
+    host: 'localhost',
     database: 'metepasla',
-    supportBigNumbers: true,
-    bigNumberStrings: true,
+    password: 'root',
+    port: 5432,
 });
-db.getConnection()
-    .then((conn) => {
-    console.log('Connected');
-})
-    .catch((err) => {
-    console.log('Error at Connection', err);
-});
-module.exports = {
-    db,
-};
