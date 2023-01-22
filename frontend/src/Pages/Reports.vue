@@ -32,7 +32,7 @@ const forceRerender = () => {
 };
 
 onMounted(async () => {
-    const { data: sensor } = await axios.get(`http://192.168.1.28:5000/sensor/`)
+    const { data: sensor } = await axios.get(`http://localhost:5000/sensor/`)
     sensors.value = sensor
     forceRerender()
 })

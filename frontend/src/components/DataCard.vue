@@ -44,7 +44,7 @@ const props = defineProps({
 })
 
   onMounted(async () => {
-            const { data: reports } = await axios.get(`http://192.168.1.28:5000/report/${props.id}`)
+            const { data: reports } = await axios.get(`http://localhost:5000/lastreport/${props.id}`)
             if(reports.length <= 0) HaveData.value = false
             else {
                 const TempColor = document.getElementById('temp')

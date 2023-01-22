@@ -39,7 +39,7 @@ const confirm_password = ref('')
 
 
 const handleSubmit = () => {
-    axios.post('http://192.168.1.28:5000/signup',{
+    axios.post('http://localhost:5000/signup',{
     name: name.value,
     email: email.value,
     password: password.value,

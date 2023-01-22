@@ -96,15 +96,15 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
   })
 
   const handleSubmit = async () => {
-      if(NewEmplacement == '') {
+      if(NewEmplacement === '') {
           error_msg.value = "Please choose a correct placement"
           return
-      } else if (isNaN(NewLongitude) || isNaN(NewLatitude) || NewLongitude == '' || NewLatitude == '') {
+      } else if (isNaN(NewLongitude) || isNaN(NewLatitude) || NewLongitude === '' || NewLatitude === '') {
           error_msg = "Please put number in the fields"
           return
       }
 
-      axios.put(`http://192.168.1.28:5000/updateSensor/${props.id}`,{
+      axios.put(`http://176.186.101.196:5000/updateSensor/${props.id}`,{
               name: NewEmplacement,
               longitude: NewLongitude,
               latitude: NewLatitude
@@ -116,7 +116,7 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
       })
   }
   const handleDelete = async () => {
-      axios.delete(`http://192.168.1.28:5000/deleteSensor/${props.id}`)
+      axios.delete(`http://localhost:5000/deleteSensor/${props.id}`)
       .then(() => {
         router.push({
           name: 'Reports'

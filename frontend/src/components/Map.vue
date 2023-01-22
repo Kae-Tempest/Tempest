@@ -33,7 +33,7 @@ let center = []
     L.marker(center, {icon: marker} ).addTo(mapDiv);
   }
   onMounted( async () => {
-    const res = await axios.get(`http://192.168.1.28:5000/sensorPosition/${route.params.id}`)
+    const res = await axios.get(`http://localhost:5000/sensorPosition/${route.params.id}`)
           const { data: sensor } = await res
           center = [sensor[0].latitude, sensor[0].longitude]
    setupLeafletMap();

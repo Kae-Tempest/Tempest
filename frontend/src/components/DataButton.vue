@@ -48,7 +48,7 @@ let showModal = ref(false)
 let LastReports = ref(Object)
 
 const ShowData = async function () {
-    const res = await axios.get(`http://192.168.1.28:5000/report/${props.id}`)
+    const res = await axios.get(`http://localhost:5000/dayreport/${props.id}`)
     const { data: reports } = await res
     let LastDayReports = []
     reports.forEach(element => {
@@ -58,7 +58,7 @@ const ShowData = async function () {
             element.mesured_at = dateFormatted
             LastDayReports.push(element)
         }
-        LastReports = LastDayReports.reverse()
+        LastReports = LastDayReports
     });
     showModal.value = !showModal.value
 }

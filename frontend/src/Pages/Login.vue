@@ -38,7 +38,7 @@ const store = LoginStore()
 let error_msg = ref('')
 
 const handleSubmit = () => {
-    axios.post('http://192.168.1.28:5000/login',{
+    axios.post('http://localhost:5000/login',{
     name: name.value,
     password: password.value
   }).then(() => {
