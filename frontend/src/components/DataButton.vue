@@ -25,8 +25,8 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item) in LastReports" :key="item.id" class="border-b border-gray-700">
-                            <td class="text-ctp-text px-6 py-4">{{ item.temperature.toFixed(2) }}°C</td>
-                            <td class="text-ctp-text px-6 py-4">{{ item.humidity.toFixed(2) }}%</td>
+                            <td class="text-ctp-text px-6 py-4">{{ item.temperature }}°C</td>
+                            <td class="text-ctp-text px-6 py-4">{{ item.humidity }}%</td>
                             <td class="text-ctp-text px-6 py-4">{{ item.mesured_at }}</td>
                         </tr>
                     </tbody>
@@ -49,7 +49,7 @@ let LastReports = ref(Object)
 
 const ShowData = async function () {
     const res = await axios.get(`http://localhost:5000/dayreport/${props.id}`)
-    const { data: reports } = await res
+    const reports = await res.data.rows
     let LastDayReports = []
     reports.forEach(element => {
         if (element.mesured_at > (Date.now() - 86400000)) {

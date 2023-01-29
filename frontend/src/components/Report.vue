@@ -104,7 +104,7 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
           return
       }
 
-      axios.put(`http://176.186.101.196:5000/updateSensor/${props.id}`,{
+      axios.put(`http://localhost:5000/updateSensor/${props.id}`,{
               name: NewEmplacement,
               longitude: NewLongitude,
               latitude: NewLatitude

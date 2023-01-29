@@ -45,11 +45,11 @@ const props = defineProps({
 
   onMounted(async () => {
             const { data: reports } = await axios.get(`http://localhost:5000/lastreport/${props.id}`)
-            if(reports.length <= 0) HaveData.value = false
+            if(reports.rows.length <= 0) HaveData.value = false
             else {
                 const TempColor = document.getElementById('temp')
                 const HumColor = document.getElementById('hum')
-                LastReports.value = reports[[reports.length - 1]]
+                LastReports.value = reports.rows[0]
                 if(LastReports.value.temperature >= 15 && LastReports.value.temperature <= 26) TempColor.classList.add('text-ctp-green');
                 if(LastReports.value.temperature < 15) TempColor.classList.add('text-ctp-sky');
                 if(LastReports.value.temperature > 26) TempColor.classList.add('text-ctp-red');

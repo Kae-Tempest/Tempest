@@ -33,7 +33,7 @@ const forceRerender = () => {
 
 onMounted(async () => {
     const { data: sensor } = await axios.get(`http://localhost:5000/sensor/`)
-    sensors.value = sensor
+    sensors.value = sensor.rows
     forceRerender()
 })
 </script>

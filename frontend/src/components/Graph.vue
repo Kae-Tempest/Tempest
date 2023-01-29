@@ -36,7 +36,7 @@ import {watchEffect, onMounted } from 'vue'
       watchEffect(() => {
         setInterval(async () => {
           const res = await axios.get(`http://localhost:5000/graphreport/${route.params.id}`)
-          const { data: reports } = await res
+          const reports = await res.data.rows
           reports.forEach(report => {
           let date = new Date(Number(report.mesured_at))
           const dateFormatted = `${date.getFullYear()} - ${(date.getMonth() + 1).toString().padStart(2, '0')} - ${date.getDate().toString().padStart(2, '0')} | ${date.getHours()}h${date.getMinutes() <= 9 ? '!' + date.getMinutes() : '0' + date.getMinutes()}`;
@@ -48,8 +48,8 @@ import {watchEffect, onMounted } from 'vue'
       }),
 
       onMounted(async () => {
-        const res = await axios.get(`http://176.186.101.196:5000/graphreport/${route.params.id}`)
-        const { data: reports } = await res
+        const res = await axios.get(`http://localhost:5000/graphreport/${route.params.id}`)
+        const reports = await res.data.rows
         reports.forEach(report => {
         let date = new Date(Number(report.mesured_at))
         const dateFormatted = `${date.getFullYear()} - ${(date.getMonth() + 1).toString().padStart(2, '0')} - ${date.getDate().toString().padStart(2, '0')} | ${date.getHours()}h${date.getMinutes() <= 9 ? '0' + date.getMinutes() : + date.getMinutes()}`;

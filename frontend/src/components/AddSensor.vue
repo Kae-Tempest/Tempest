@@ -84,9 +84,11 @@ import { Icon } from '@iconify/vue';
     showModal.value = !showModal.value;
   }
   const handleSubmit = async () => {
-    const sensors = await axios.get('http://176.186.101.196:5000/sensor')
-        for(let i = 0; i < sensors.data.length; i++) {
-          if((sensors.data[i].id)  == id.value) {
+    let sensors = await axios.get('http://localhost:5000/sensor')
+    sensors = sensors.data.rows
+    console.log(sensors);
+        for(let i = 0; i < sensors.length; i++) {
+          if((sensors[0].id)  == id.value) {
             error_msg.value = 'This ID is already used'
             return
           }

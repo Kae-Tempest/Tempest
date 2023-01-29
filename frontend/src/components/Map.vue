@@ -34,7 +34,7 @@ let center = []
   }
   onMounted( async () => {
     const res = await axios.get(`http://localhost:5000/sensorPosition/${route.params.id}`)
-          const { data: sensor } = await res
+          const sensor = await res.data.rows
           center = [sensor[0].latitude, sensor[0].longitude]
    setupLeafletMap();
  });
