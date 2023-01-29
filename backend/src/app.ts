@@ -12,24 +12,22 @@ app.use(cors());
 //app.use(logger);
 
 app.post('/login', async (req: Request, res: Response) => {
-	const Members: User[] = await db.query(`select * from users where name = $1 order by id desc`, [req.body.name])
-        .then((res:any, err:any) => {
-            if(err) throw err
-            return res.rows
-        })
+	const Members: User[] = await db.query(`select * from users where name = $1 order by id desc`, [req.body.name]).then((res: any, err: any) => {
+		if (err) throw err;
+		return res.rows;
+	});
 
-    if(Members.length > 0) {
-        Members.forEach((member) => {
-            if (member.name === req.body.name && compareSync(req.body.password, member.password)) {
-                return res.sendStatus(200);
-            } else {
-                return res.status(401).send({ msg: 'Password incorrect' });
-            }
-        });
-    } else {
-        return res.status(401).send({msg: 'User Not Found'})
-    }
-
+	if (Members.length > 0) {
+		Members.forEach((member) => {
+			if (member.name === req.body.name && compareSync(req.body.password, member.password)) {
+				return res.sendStatus(200);
+			} else {
+				return res.status(401).send({ msg: 'Password incorrect' });
+			}
+		});
+	} else {
+		return res.status(401).send({ msg: 'User Not Found' });
+	}
 });
 app.post('/signup', async (req: Request, res: Response) => {
 	const newMember = {
@@ -37,22 +35,21 @@ app.post('/signup', async (req: Request, res: Response) => {
 		password: req.body.password,
 		email: req.body.email,
 	};
-	const Members: User[] = await db.query(`select * from users order by id desc`)
-        .then((res:any, err:any) => {
-            if(err) throw err
-            return res.rows
-        })
-    if(Members.length > 0) {
-        Members.forEach((member) => {
-            if (member.name == newMember.name || member.email == newMember.email) return res.status(401).send({ msg: 'Name or Email already taken' });
-            if (req.body.password != req.body.confirm_password) return res.status(401).send({ msg: 'Password and confirm password are not the same' });
-            if (!newMember.name || !newMember.email) return res.status(401).send({ msg: 'Please include a name and email' });
-        });
-    }
-
-	let hashPassword = hashSync(newMember.password, 10);
-	db.query(`insert into users (name, password, email) values ($1,$2,$3)`, [newMember.name, hashPassword, newMember.email]);
-	res.sendStatus(200);
+	const Members: User[] = await db.query(`select * from users order by id desc`).then((res: any, err: any) => {
+		if (err) throw err;
+		return res.rows;
+	});
+	if (newMember.password != req.body.confirm_password) return res.status(401).send({ msg: 'Password and confirm password are not the same' });
+	if (!newMember.name || !newMember.email) return res.status(401).send({ msg: 'Please include a name and email' });
+	if (Members.length > 0) {
+		const ExitingName = Members.map((m) => m.name != newMember.name);
+		const ExitingEmail = Members.map((m) => m.email != newMember.email);
+		if (ExitingEmail && ExitingName) {
+			let hashPassword = hashSync(newMember.password, 10);
+			db.query(`insert into users (name, password, email) values ($1,$2,$3)`, [newMember.name, hashPassword, newMember.email]);
+			return res.sendStatus(200);
+		} else return res.status(401).send({ msg: 'Name or Email already taken' });
+	}
 });
 
 app.post('/data/:id', (req: Request, res: Response) => {
@@ -66,12 +63,11 @@ app.post('/data/:id', (req: Request, res: Response) => {
 	return res.sendStatus(200);
 });
 app.post('/createSensor', async (req: Request, res: Response) => {
-    console.log(req.body)
-	const Sensors: Sensor[] = await db.query(`select * from sensor`)
-        .then((res:any, err:any ) => {
-            if(err) throw err
-            return res.rows
-        })
+	console.log(req.body);
+	const Sensors: Sensor[] = await db.query(`select * from sensor`).then((res: any, err: any) => {
+		if (err) throw err;
+		return res.rows;
+	});
 
 	const newSensor = {
 		id: req.body.id,
@@ -79,20 +75,19 @@ app.post('/createSensor', async (req: Request, res: Response) => {
 		longitude: req.body.longitude,
 		latitude: req.body.latitude,
 	};
-    if(Sensors.length > 0 ) {
-        Sensors.forEach((sensor: Sensor) => {
-            if (newSensor.id === sensor.id) {
-                return res.status(401).send({ msg: 'Sensor already exist' });
-            } else {
-                db.query(`insert into sensor (id,sensor_name, longitude, latitude) values ($1,$2,$3,$4)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
-                return res.sendStatus(200);
-            }
-        });
-    } else {
-        db.query(`insert into sensor (id,sensor_name, longitude, latitude) values ($1,$2,$3,$4)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
-        return res.sendStatus(200);
-    }
-
+	if (Sensors.length > 0) {
+		Sensors.forEach((sensor: Sensor) => {
+			if (newSensor.id === sensor.id) {
+				return res.status(401).send({ msg: 'Sensor already exist' });
+			} else {
+				db.query(`insert into sensor (id,sensor_name, longitude, latitude) values ($1,$2,$3,$4)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
+				return res.sendStatus(200);
+			}
+		});
+	} else {
+		db.query(`insert into sensor (id,sensor_name, longitude, latitude) values ($1,$2,$3,$4)`, [newSensor.id, newSensor.name, newSensor.longitude, newSensor.latitude]);
+		return res.sendStatus(200);
+	}
 });
 app.put('/updateSensor/:id', async (req: Request, res: Response) => {
 	const sensor: Sensor[] = await db.query(`select * from sensor where id = $1`, [req.params.id]);
