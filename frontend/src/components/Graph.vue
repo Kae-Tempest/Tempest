@@ -59,9 +59,9 @@ import {watchEffect, onMounted } from 'vue'
       });
 
 
-      Temp = Temp.slice(-50)
-      Hum = Hum.slice(-50)
-      labels = labels.slice(-50)
+      Temp = Temp.slice(-50).reverse()
+      Hum = Hum.slice(-50).reverse()
+      labels = labels.slice(-50).reverse()
       config.data.datasets[0].data = Temp
       config.data.datasets[1].data = Hum
       config.data.labels = labels
