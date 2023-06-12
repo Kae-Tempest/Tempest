@@ -1,5 +1,5 @@
 <template>
-    <button class="bg-ctp-surface0 hover:bg-ctp-surface1 text-ctp-blue py-2 px-4 rounded border border-white" @click="ShowData()">Last 24h report</button>
+    <button class="bg-ctp-surface0 hover:bg-ctp-surface1 text-ctp-blue py-2 px-4 my-5 rounded border border-white mx-10" @click="ShowData()">Last 24h report</button>
     <!-- Extra Large Modal -->
     <div v-if="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex bg-ctp-crust/75">
     <div class="relative w-full h-screen max-w-7xl">
@@ -41,14 +41,14 @@ import axios from 'axios';
 import { ref } from 'vue';
 
 const props = defineProps({
-    id: Number
+    id: String
 })
 
 let showModal = ref(false)
 let LastReports = ref(Object)
 
 const ShowData = async function () {
-    const res = await axios.get(`http://localhost:5000/dayreport/${props.id}`)
+    const res = await axios.get(`http://192.168.1.28:5000/dayreport/${props.id}`)
     const reports = await res.data.rows
     let LastDayReports = []
     reports.forEach(element => {
@@ -71,6 +71,6 @@ const ShowData = async function () {
   scrollbar-width: none;
 }
 #screen::-webkit-scrollbar {
-  width: 0rem;;
+  width: 0;
 }
 </style>

@@ -10,8 +10,8 @@
           {{ error_msg }}
         </div>
       <div class="flex justify-end h-10">
-        <div class="scale-[0.25] translate-x-32 -translate-y-20">
-        <img src="../assets/Logo.png" alt="logo" class=" -translate-y-20 translate-x-20 scale-150 rotate-[28deg]">
+        <div class="scale-[0.25] translate-x-80 -translate-y-28">
+        <img src="../assets/Logo.png" alt="logo" class="-translate-y-20 scale-150">
         </div>
       </div>
       <InputComponent placeholder="Username" iconName="ph:user-circle-bold" v-model="name" model="name" type="text" color="text-ctp-green"/>
@@ -38,7 +38,7 @@ const store = LoginStore()
 let error_msg = ref('')
 
 const handleSubmit = () => {
-    axios.post('http://localhost:5000/login',{
+    axios.post('http://192.168.1.28:5000/login',{
     name: name.value,
     password: password.value
   }).then(() => {

@@ -1,8 +1,8 @@
 <template>
-    <nav class="w-auto bg-ctp-crust flex justify-between items-center pl-4 pr-32">
+    <nav class="w-auto bg-ctp-crust flex justify-between items-center pl-4 pr-12">
         <router-link to="/"><div class="flex gap-4">
-            <img src="../assets/Logo.png" alt="logo" class="h-[71px]">
-            <h1 class="text-ctp-text text-xxl">Métépaslà</h1>
+            <img src="../assets/Logo.png" alt="logo" class="h-28">
+            <h1 class="text-ctp-text text-4xl self-center">TEMPEST</h1>
         </div></router-link>
         <div>
             <div class="text-ctp-subtext0 ab">
@@ -10,7 +10,7 @@
                     <router-link to="/signup">Sign Up</router-link>
                 </div>
                 <div v-else-if="connect" >
-                    <button @click="disconect">
+                    <button @click="disconnect">
                         Log Out
                     </button>
                 </div>
@@ -32,7 +32,7 @@ const store = LoginStore()
 const route = useRoute()
 const connect = store.connect
 
-const disconect = () => {
+const disconnect = () => {
     store.setConnect(false)
     location.reload()
 }

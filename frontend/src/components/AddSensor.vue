@@ -42,17 +42,6 @@
                   <input v-model="id" type="text" class="block w-full p-2 border rounded-lg sm:text-xs bg-ctp-surface0 dark:border-ctp-surface2 placeholder-ctp-surface2 text-white">
                 </div>
               </div>
-                <hr class="border-ctp-overlay2 my-4">
-                <div class="grid gap-6 mb-6 grid-cols-2">
-                  <div>
-                    <label for="Longitude" class="block mb-2 dark:text-white">Longitude</label>
-                    <input v-model="Longitude" type="text" class="block w-full p-2 border rounded-lg sm:text-xs bg-ctp-surface0 dark:border-ctp-surface2 placeholder-ctp-surface2 text-white">
-                </div>
-                <div>
-                    <label for="Latitude" class="block mb-2 dark:text-white">Latitude</label>
-                    <input v-model="Latitude" type="text" class="block w-full p-2 border rounded-lg sm:text-xs bg-ctp-surface0 dark:border-ctp-surface2 placeholder-ctp-surface2 text-white">
-                </div>
-                </div>
             </div>
             <!--footer-->
             <div class="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
@@ -75,37 +64,33 @@ import { Icon } from '@iconify/vue';
 
   let showModal = ref(false);
   const emplacement = ref('')
-  const id = ref('')
-  const Longitude = ref('')
-  const Latitude = ref('')
+  const id = ref()
   const error_msg = ref('')
 
   const toggleModal = () => {
     showModal.value = !showModal.value;
   }
   const handleSubmit = async () => {
-    let sensors = await axios.get('http://localhost:5000/sensor')
+    let sensors = await axios.get('http://192.168.1.28:5000/sensor')
     sensors = sensors.data.rows
     console.log(sensors);
         for(let i = 0; i < sensors.length; i++) {
-          if((sensors[0].id)  == id.value) {
+          if((sensors[0].id) === id.value) {
             error_msg.value = 'This ID is already used'
             return
           }
         }
-    if(emplacement.value == '' || id.value == '' || Longitude.value == '' || Latitude.value == '') {
+    if(emplacement.value === '' || id.value === '') {
       error_msg.value = 'Please fill all the fields'
       return
     }
-    if(isNaN(id.value) || isNaN(Longitude.value) || isNaN(Latitude.value)) {
-      error_msg.value = 'Please put number in the fields'
+    if(isNaN(id.value)) {
+      error_msg.value = 'Please put number in the field'
       return
     }
-    axios.post('http://localhost:5000/createSensor',{
+    axios.post('http://192.168.1.28:5000/createSensor',{
           name: emplacement.value,
           id: id.value,
-          longitude: Longitude.value,
-          latitude: Latitude.value
         }).then(() => {
           location.reload()
         })

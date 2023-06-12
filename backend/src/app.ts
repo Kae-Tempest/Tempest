@@ -93,9 +93,9 @@ app.put('/updateSensor/:id', async (req: Request, res: Response) => {
 	const sensor: Sensor[] = await db.query(`select * from sensor where id = $1`, [req.params.id]);
 	const newSensor = {
 		id: req.params.id,
-		name: req.body.name,
-		longitude: req.body.longitude,
-		latitude: req.body.latitude,
+		name: req.body.name || sensor[0].sensor_name,
+		longitude: req.body.longitude || sensor[0].longitude,
+		latitude: req.body.latitude || sensor[0].latitude,
 	};
 	if (newSensor.id === JSON.stringify(sensor[0].id)) {
 		db.query(`update sensor set sensor_name = $1 , longitude = $2 , latitude = $3 where id = $4`, [newSensor.name, newSensor.longitude, newSensor.latitude, newSensor.id]);
