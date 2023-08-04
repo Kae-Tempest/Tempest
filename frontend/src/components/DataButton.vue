@@ -24,10 +24,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item) in LastReports" :key="item.id" class="border-b border-gray-700">
-                            <td class="text-ctp-text px-6 py-4">{{ item.temperature }}°C</td>
-                            <td class="text-ctp-text px-6 py-4">{{ item.humidity }}%</td>
-                            <td class="text-ctp-text px-6 py-4">{{ item.mesured_at }}</td>
+                        <tr v-for="(item) in LastReports" :key="item.ID" class="border-b border-gray-700">
+                            <td class="text-ctp-text px-6 py-4">{{ item.Temperature }}°C</td>
+                            <td class="text-ctp-text px-6 py-4">{{ item.Humidity }}%</td>
+                            <td class="text-ctp-text px-6 py-4">{{ item.MesuredAt }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -48,18 +48,9 @@ let showModal = ref(false)
 let LastReports = ref(Object)
 
 const ShowData = async function () {
-    const res = await axios.get(`http://192.168.1.28:5000/dayreport/${props.id}`)
-    const reports = await res.data.rows
-    let LastDayReports = []
-    reports.forEach(element => {
-        if (element.mesured_at > (Date.now() - 86400000)) {
-            let date = new Date(Number(element.mesured_at))
-            const dateFormatted = `${date.getDate().toString().padStart(2, '0')} | ${date.getHours().toString().padStart(2, '0')}h${date.getMinutes().toString().padStart(2, '0')}`;
-            element.mesured_at = dateFormatted
-            LastDayReports.push(element)
-        }
-        LastReports = LastDayReports
-    });
+    const {data : LastDayReports} = await axios.get(`http://localhost:5000/dayreport/${props.id}`)
+    console.log(LastDayReports)
+    LastReports = LastDayReports
     showModal.value = !showModal.value
 }
 </script>

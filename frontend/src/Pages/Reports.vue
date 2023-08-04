@@ -3,8 +3,8 @@
         <NavBar />
         <div class="flex flex-wrap">
             <div v-for="sensor in sensors" class="pl-10 pt-10">
-                <SensorCard :id="sensor.id" :name=sensor.sensor_name :key="renderComponent"/>
-                <DataButton :id="sensor.id"/>
+                <SensorCard :id="sensor.ID" :name=sensor.Sensor_name :key="renderComponent"/>
+                <DataButton :id="sensor.ID"/>
             </div>
         </div>
         <div v-show="connect">
@@ -34,8 +34,8 @@ const forceRerender = () => {
 };
 
 onMounted(async () => {
-    const { data: sensor } = await axios.get(`http://192.168.1.28:5000/sensor/`)
-    sensors.value = sensor.rows
+    const {data: sensor} = await axios.get(`http://localhost:5000/sensor`)
+    sensors.value = sensor
     forceRerender()
 })
 </script>

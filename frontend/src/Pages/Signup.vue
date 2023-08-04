@@ -39,10 +39,10 @@ const confirm_password = ref('')
 
 
 const handleSubmit = () => {
-    axios.post('http://192.168.1.28:5000/signup',{
-    name: name.value,
-    email: email.value,
-    password: password.value,
+    axios.post('http://127.0.0.1:5000/signup',{
+    Name: name.value,
+    Email: email.value,
+    Password: password.value,
     confirm_password: confirm_password.value
   }).then(() => {
     store.setConnect(true)
@@ -50,8 +50,7 @@ const handleSubmit = () => {
       name: 'Reports'
     })
   }).catch(res => {
-    console.log(res);
-    error_msg.value = res.response.data.msg
+    error_msg.value = res.message
   })
 }
 </script>

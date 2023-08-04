@@ -2,8 +2,8 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { hashSync, compareSync } from 'bcrypt';
 import { User, Sensor, Data } from './types';
-import { logger } from './middleware/logger';
-const { db } = require('./databases/connect.js');
+// import { logger } from './middleware/logger';
+import {db} from './databases/connect.js';
 const app: Application = express();
 
 app.use(express.json());
@@ -51,7 +51,6 @@ app.post('/signup', async (req: Request, res: Response) => {
 		} else return res.status(401).send({ msg: 'Name or Email already taken' });
 	}
 });
-
 app.post('/data/:id', (req: Request, res: Response) => {
 	const newData = {
 		id: req.params.id,
@@ -112,26 +111,23 @@ app.delete('/deleteSensor/:id', async (req: Request, res: Response) => {
 		return res.sendStatus(200);
 	}
 });
+
 app.get('/lastreport/:id', async (req: Request, res: Response) => {
 	const data: Data[] = await db.query(`select * from data where sensor_id = $1 order by id desc limit 1`, [req.params.id]);
 	return res.send(data).status(200);
 });
-
 app.get('/graphreport/:id', async (req: Request, res: Response) => {
 	const data: Data[] = await db.query(`select * from data where sensor_id = $1 order by id desc limit 35`, [req.params.id]);
 	return res.send(data).status(200);
 });
-
 app.get('/dayreport/:id', async (req: Request, res: Response) => {
 	const data: Data[] = await db.query(`select * from data where sensor_id = $1 order by id desc limit 288`, [req.params.id]);
 	return res.send(data).status(200);
 });
-
 app.get('/sensor', async (req: Request, res: Response) => {
 	const data: Sensor[] = await db.query(`select * from sensor`);
 	return res.send(data).status(200);
 });
-
 app.get('/sensorPosition/:id', async (req: Request, res: Response) => {
 	const Position: Number[] = await db.query(`select longitude, latitude from sensor where id = $1`, [req.params.id]);
 	return res.send(Position).status(200);

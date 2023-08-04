@@ -84,7 +84,8 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
       if (NewEmplacement.value === '') {
           error_msg.value = "Please choose a correct placement"
       } else {
-          axios.put(`http://192.168.1.28:5000/updateSensor/${props.id}`, {
+          axios.put(`http://localhost:5000/updateSensor/${props.id}`, {
+              ID: props.id,
               name: NewEmplacement.value,
           }).then(() => {
               Modal.value = !Modal.value
@@ -94,7 +95,7 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
       }
   }
   const handleDelete = async () => {
-      axios.delete(`http://192.168.1.28:5000/deleteSensor/${props.id}`)
+      axios.delete(`http://localhost:5000/deleteSensor/${props.id}`)
       .then(() => {
         router.push({
           name: 'Reports'

@@ -71,15 +71,6 @@ import { Icon } from '@iconify/vue';
     showModal.value = !showModal.value;
   }
   const handleSubmit = async () => {
-    let sensors = await axios.get('http://192.168.1.28:5000/sensor')
-    sensors = sensors.data.rows
-    console.log(sensors);
-        for(let i = 0; i < sensors.length; i++) {
-          if((sensors[0].id) === id.value) {
-            error_msg.value = 'This ID is already used'
-            return
-          }
-        }
     if(emplacement.value === '' || id.value === '') {
       error_msg.value = 'Please fill all the fields'
       return
@@ -88,14 +79,14 @@ import { Icon } from '@iconify/vue';
       error_msg.value = 'Please put number in the field'
       return
     }
-    axios.post('http://192.168.1.28:5000/createSensor',{
-          name: emplacement.value,
-          id: id.value,
+    axios.post('http://localhost:5000/createSensor',{
+          Sensor_name: emplacement.value,
+          ID: id.value,
         }).then(() => {
           location.reload()
         })
         .catch(res => {
-          error_msg.value = res.response.data.msg
+          error_msg.value = res.message
         })
   }
   </script>

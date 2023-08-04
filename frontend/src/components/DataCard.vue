@@ -10,10 +10,10 @@
             <div class="flex justify-between px-10 py-3 h-full">
                 <div id="temp" class="text-3xl"
                     :class="{ 'text-ctp-red': hot, 'text-ctp-green': normal, 'text-ctp-sky': cold }">
-                    {{ LastReports.temperature }}°C</div>
+                    {{ LastReports.Temperature }}°C</div>
                 <div id="hum" class="text-3xl"
                     :class="{ 'text-ctp-red': sec, 'text-ctp-green': warm, 'text-ctp-peach': hum }">
-                    {{ Math.trunc(LastReports.humidity * 10000) / 10000 }}%</div>
+                    {{ Math.trunc(LastReports.Humidity * 10000) / 10000 }}%</div>
             </div>
         </div>
     </div>
@@ -37,10 +37,11 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-    const { data: reports } = await axios.get(`http://192.168.1.28:5000/lastreport/${props.id}`)
-    if (reports.rows.length <= 0) HaveData.value = false
+    const { data: reports } = await axios.get(`http://localhost:5000/lastreport/${props.id}`)
+    console.log(reports)
+    if (reports.length <= 0) HaveData.value = false
     else {
-        LastReports.value = reports.rows[0]
+        LastReports.value = reports
         if (LastReports.value.temperature >= 15 && LastReports.value.temperature <= 26) { normal.value = true; hot.value = false; cold.value = false }
         if (LastReports.value.temperature < 15) { normal.value = false; hot.value = false; cold.value = true }
         if (LastReports.value.temperature > 26) { normal.value = false; hot.value = true; cold.value = false }
