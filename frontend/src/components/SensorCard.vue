@@ -85,7 +85,6 @@ const DataCard = defineAsyncComponent(() => import('../components/DataCard.vue')
           error_msg.value = "Please choose a correct placement"
       } else {
           axios.put(`http://localhost:5000/updateSensor/${props.id}`, {
-              ID: props.id,
               name: NewEmplacement.value,
           }).then(() => {
               Modal.value = !Modal.value

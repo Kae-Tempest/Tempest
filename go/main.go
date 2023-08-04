@@ -37,7 +37,6 @@ type Sensor struct {
 }
 
 type SensorEmplacement struct {
-	ID   string
 	Name string
 }
 
@@ -308,6 +307,7 @@ func main() {
 			c.JSON(400, gin.H{"error": "Invalid data provided"})
 			return
 		}
+		fmt.Println(&name)
 		id := c.Param("id")
 		Gerr := db.Get(&sensor, "select * from public.sensor where id = $1", id)
 		if Gerr != nil {
