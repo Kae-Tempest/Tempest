@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-ctp-base;
+  @apply text-ctp-text;
+}
+
+:root {
+  --navHeight: 100px;
+}
+nav {
+  height: var(--navHeight);
+}
+
+#screen {
+  --screenSize: calc(100vh - var(--navHeight) );
+  height: var(--screenSize);
+}
