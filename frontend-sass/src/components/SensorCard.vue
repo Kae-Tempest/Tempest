@@ -8,30 +8,29 @@
                 </button>
             </div>
           <!-- Modal -->
-          <div id="modal" v-if="Modal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
-            <div class="relative w-1/2 my-6 max-w-5xl">
+          <div id="modal" v-if="Modal">
+            <div>
               <!--content-->
-              <div class="border rounded-lg shadow-lg relative flex flex-col w-full bg-ctp-base outline-none focus:outline-none border-ctp-peach">
+              <div>
                 <!--header-->
-                <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 class="text-xl font-semibold text-ctp-text pt-3">Update Sensor</h3>
-                  <button class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none" v-on:click="ShowModal()">
-                    <button class="text-ctp-sky bg-transparent font-bold uppercase text-sm px-6 py-3 outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                <div>
+                  <h3>Update Sensor</h3>
+                  <button v-on:click="ShowModal()">
+                    <button type="button">
                     X
                   </button>
                   </button>
                 </div>
 
-
                 <!--body-->
                 <form method="PUT">
-                  <div v-if="error_msg" :class="{'isError': error_msg}" class="text-ctp-red pl-3 pt-5 flex justify-center">
+                  <div v-if="error_msg" :class="{'isError': error_msg}" >
                     {{ error_msg }}
                   </div>
-                  <div class="relative pt-3 pb-6 px-6 flex-auto">
+                  <div>
                     <div>
-                      <label for="emplacement" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Emplacement</label>
-                      <select v-model="NewEmplacement" id="emplacement" class=" border text-sm rounded-lg block w-full p-2.5 bg-ctp-surface0 dark:border-ctp-surface2 placeholder-ctp-surface2 text-white">
+                      <label for="emplacement" >Emplacement</label>
+                      <select v-model="NewEmplacement" id="emplacement">
                         <option value="Salon">Salon</option>
                         <option value="Cuisine">Cuisine</option>
                         <option value="Chambre 1">Chambre 1</option>
@@ -43,14 +42,11 @@
                     </div>
                   </div>
                   <!--footer-->
-                  <div class="flex items-center justify-center p-6 border-t border-solid border-slate-200 rounded-b">
-                    <button class="text-ctp-sapphire border border-ctp-sapphire rounded-md
-                    hover:bg-ctp-sapphire hover:text-ctp-maroon
-                    background-transparent font-bold uppercase
-                    px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" v-on:click="handleSubmit()">
+                  <div>
+                    <button v-on:click="handleSubmit()">
                       Update Sensor
                     </button>
-                    <button class="text-ctp-maroon border border-ctp-maroon rounded-md hover:bg-ctp-maroon hover:text-ctp-sky background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" v-on:click="handleDelete()">
+                    <button v-on:click="handleDelete()">
                       Delete Sensor
                     </button>
                   </div>
@@ -58,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div id="bg" v-if="Modal" class="fixed inset-0 z-40 bg-ctp-crust/50"></div>
+          <div id="bg" v-if="Modal"></div>
       </div>
     </div>
 </template>
