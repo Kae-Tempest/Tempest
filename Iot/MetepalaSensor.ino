@@ -8,8 +8,8 @@
 DHT dht(2, DHT22);
 // rgb_lcd LCD;
 
-const char* mySSID = "Bbox-D78B31C8";
-const char* mySecKey = "dgs964tvXzS2LQg97J";
+const char* mySSID = "My_SSID";
+const char* mySecKey = "******";
 String serverName = "http://192.168.1.28:5000/data/1";
 
 void setup() {
